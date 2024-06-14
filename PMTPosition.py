@@ -27,3 +27,9 @@ def GenEventPosition(x_offset = 0.0, y_offset = 0.0, size = 10, distribution = '
     pos = np.vstack((x, y)).T
     
     return pos
+
+
+if __name__ == "__main__":
+    
+    pos = GenEventPosition()
+    print(pos)
