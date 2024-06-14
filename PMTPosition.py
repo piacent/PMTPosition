@@ -54,8 +54,37 @@ def GetR_All(PMT_pos = np.array([[0.0, 0.0]]), Event_pos = np.array([[0.0, 0.0]]
         else:
             R_all = np.vstack((R_all, GetR(PMT_pos = pmt_xy, Event_pos = Event_pos)))
     return R_all.T
-    
 
+def GetIntegrals(R_all = np.array([[0.0, 0.0]]), energy = 5.9, LY = 10000.0):
+    """
+    Returns integrals of PMT waveforms for all the PMTs in C, given the distance between the PMT and the events (R_all),
+    the energy of the event in keV (energy), and the light yield of 55Fe events in the detector in sc_integral (LY)
+    """
+    # Assuming I = A * Energy / R^4
+    # A is extracted by the plot of Fig. 3.27 of M. Folcarelli's thesis [screenshot at doc/Folcarelli_3_27.]
+    # N.B. there Li is expressed in nC
+    # FIXME: this should be re-estimated with care!!! (as I scales with R^-4 only at fixed Z)
+    
+    A = (np.exp(17.26)/1e+9) # C * cm^4 / sc_integral
+    
+    # Express now A in C * cm^4 / keV, where 1 sc_integral = (5.9/LY) keV
+    A = A / (5.9 / LY)
+    
+    if not isinstance(energy, np.ndarray):
+        all_energies = np.repeat(energy, len(R_all.T[0]))
+    else:
+        if len(energies) != len(R_all.T[0]):
+            raise Exception("PMTposition.GetIntegrals: energy input has wrong size.")
+        all_energies = energy
+
+    integrals = np.array([])
+    for R in R_all.T:
+        if len(integrals) == 0:
+            integrals = A * all_energies / R**4
+        else:
+            integrals = np.vstack((integrals, A * all_energies / R**4))
+            
+    return integrals.T
 
 
 if __name__ == "__main__":
@@ -70,5 +99,10 @@ if __name__ == "__main__":
 
     print("\nR_all:")
     PMT_pos = np.array([[25.0, 20.0], [25.0, 60.0]])
+    PMT_pos = np.array([[10.0, 10.0], [10.0, 10.0]])
     R_all   = GetR_All(PMT_pos = PMT_pos, Event_pos = pos)
     print(R_all)
+
+    print("\nIntegrals:")
+    ints = GetIntegrals(R_all, energy = 5.9, LY = 8500.0)
+    print(ints)
