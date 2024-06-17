@@ -63,7 +63,6 @@ def GetIntegrals(R_all = np.array([[0.0, 0.0]]), energy = 5.9, LY = 10000.0):
     # Assuming I = A * Energy / R^4
     # A is extracted by the plot of Fig. 3.27 of M. Folcarelli's thesis [screenshot at doc/Folcarelli_3_27.]
     # N.B. there Li is expressed in nC
-    # FIXME: this should be re-estimated with care!!! (as I scales with R^-4 only at fixed Z)
     
     A = (np.exp(17.26)/1e+9) # C * cm^4 / sc_integral
     
