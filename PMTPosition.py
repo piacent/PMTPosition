@@ -16,7 +16,7 @@ def GetGEMsZ():
     """
     Returns z distance GEM distance form PMT in cm 
     """
-    GEM_z = 60.0 # FIXME: put here the real number!!!
+    GEM_z = 59.0 # Updated to the latest design of 17/06/2024
     return GEM_z
 
 def GenEventPosition(x_offset = 0.0, y_offset = 0.0, size = 10, distribution = 'uniform'):
@@ -69,6 +69,14 @@ def GetIntegrals(R_all = np.array([[0.0, 0.0]]), energy = 5.9, LY = 10000.0):
     
     # Express now A in C * cm^4 / keV, where 1 sc_integral = (5.9/LY) keV
     A = A / (5.9 / LY)
+
+    # Rescale A such to properly take into account the difference in GEM_z
+    GEM_z_LIME = 19.0
+    GEM_z      = GetGEMsZ()
+    L_0    = A * 5.9 / GEM_z_LIME**4
+    L_1    = L_0 * GEM_z_LIME**2 / GEM_z**2
+    A_corr = L_1 * GEM_z**4 / 5.9
+    # Previous equations equivalent to A_corr = A / (GEM_Z_lime^2 * GEM_z^2) / (5.9/LY)
     
     if not isinstance(energy, np.ndarray):
         all_energies = np.repeat(energy, len(R_all.T[0]))
@@ -80,9 +88,9 @@ def GetIntegrals(R_all = np.array([[0.0, 0.0]]), energy = 5.9, LY = 10000.0):
     integrals = np.array([])
     for R in R_all.T:
         if len(integrals) == 0:
-            integrals = A * all_energies / R**4
+            integrals = A_corr * all_energies / R**4
         else:
-            integrals = np.vstack((integrals, A * all_energies / R**4))
+            integrals = np.vstack((integrals, A_corr * all_energies / R**4))
             
     return integrals.T
 
