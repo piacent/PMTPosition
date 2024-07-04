@@ -19,15 +19,26 @@ def GetGEMsZ():
     GEM_z = 59.0 # Updated to the latest design of 17/06/2024
     return GEM_z
 
-def GenEventPosition(x_offset = 0.0, y_offset = 0.0, size = 10, distribution = 'uniform'):
+def GenEventPosition(x_offset = 0.0, y_offset = 0.0, x_start = 0.0, x_end = 0.0, size = 10, distribution = 'uniform'):
     """
     Returns N=size randomly generated spot positions with the specified spacial `distribution`, and
     assuming an offset = [x_offset, y_offset]
     """
+
+    if size <= 0:
+        raise ValueError("Size must be a positive integer.")
+
     GEM_width, GEM_height = GetGEMsDim()
+
     if distribution == 'uniform':
         x = st.uniform.rvs(loc = x_offset, scale = GEM_width,  size = size)
         y = st.uniform.rvs(loc = y_offset, scale = GEM_height, size = size)
+
+    elif distribution == 'fixedY':
+
+        x = np.linspace(x_start, x_end, size)
+        y = np.full(size, y_offset)
+
     else:
         raise Exception("PMTPosition.GenEventPosition: unknown '"+distribution+"' distribution.")
 
