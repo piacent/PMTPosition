@@ -8,8 +8,8 @@ def GetGEMsDim():
     """
     Returns GEM dimensions in cm (width and height, respectively)
     """
-    GEM_width  = 50.0
-    GEM_height = 80.0
+    GEM_width  = 80.0
+    GEM_height = 50.0
     return GEM_width, GEM_height
 
 def GetGEMsZ():
