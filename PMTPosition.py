@@ -105,6 +105,34 @@ def GetIntegrals(R_all = np.array([[0.0, 0.0]]), energy = 5.9, LY = 10000.0):
             
     return integrals.T
 
+def create_bat_input(run=10000, n_evts=0, trigger=0, ints=[]):
+    """
+    Creates a file for BAT input containing waveform slice integrals.
+    
+    Inout format:
+    - run: The run number.
+    - event: The event number.
+    - trigger: The trigger number.
+    - ints: A list of lists where each sublist contains the waveform integrals for each PMT.
+
+    -- Example:
+    run     event trigger peak_ind/slice    ints[[pmt1,pmt2,pmt3,pmt4]]
+    10000	0	    0	        0  	        8.874e-10	5.862e-10	1.285e-09	7.877e-10
+    10000	1	    0	        0  	        9.109e-10	6.976e-10	1.326e-09	9.652e-10
+    10000	2	    0	        0  	        8.839e-10	8.001e-10	1.278e-09	1.135e-09            
+    """
+    # Conversion factor from ADU to nC
+    vtg_to_nC = (1. / 4096.) * (4. / 3.) * (1. / 50.)
+    
+    slice = 0  # We don't have multiple slices/peaks in this case
+    with open("output_for_bat.txt", "w") as outFile:
+        for evt in range(n_evts):
+            outFile.write(f"{run}\t{evt}\t{trigger}\t{slice}")
+            
+            for pmt_i in range(len(ints[0])):
+                outFile.write(f"\t{ints[evt][pmt_i] * vtg_to_nC}")
+            
+            outFile.write("\n")
 
 if __name__ == "__main__":
 
