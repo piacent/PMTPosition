@@ -105,7 +105,7 @@ def GetIntegrals(R_all = np.array([[0.0, 0.0]]), energy = 5.9, LY = 10000.0):
             
     return integrals.T
 
-def create_bat_input(run=10000, n_evts=0, trigger=0, ints=[]):
+def create_bat_input(fname = "./outputs/output_for_bat.txt", run=10000, n_evts=0, trigger=0, ints=[]):
     """
     Creates a file for BAT input containing waveform slice integrals.
     
@@ -122,10 +122,12 @@ def create_bat_input(run=10000, n_evts=0, trigger=0, ints=[]):
     10000	2	    0	        0  	        8.839e-10	8.001e-10	1.278e-09	1.135e-09            
     """
     # Conversion factor from ADU to nC
-    vtg_to_nC = (1. / 4096.) * (4. / 3.) * (1. / 50.)
+    ## -> Not required for this version since we already have the results in nC
+    # vtg_to_nC = (1. / 4096.) * (4. / 3.) * (1. / 50.)
+    vtg_to_nC = 1
     
     slice = 0  # We don't have multiple slices/peaks in this case
-    with open("output_for_bat.txt", "w") as outFile:
+    with open(fname, "w") as outFile:
         for evt in range(n_evts):
             outFile.write(f"{run}\t{evt}\t{trigger}\t{slice}")
             
