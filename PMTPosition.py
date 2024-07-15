@@ -67,7 +67,7 @@ def GetR_All(PMT_pos = np.array([[0.0, 0.0]]), Event_pos = np.array([[0.0, 0.0]]
             R_all = np.vstack((R_all, GetR(PMT_pos = pmt_xy, Event_pos = Event_pos)))
     return R_all.T
 
-def GetIntegrals(R_all = np.array([[0.0, 0.0]]), energy = 5.9, LY = 10000.0):
+def GetIntegrals(R_all = np.array([[0.0, 0.0]]), energy = 5.9, LY = 10000.0, rescale = True):
     """
     Returns integrals of PMT waveforms for all the PMTs in C, given the distance between the PMT and the events (R_all),
     the energy of the event in keV (energy), and the light yield of 55Fe events in the detector in sc_integral (LY)
@@ -84,10 +84,12 @@ def GetIntegrals(R_all = np.array([[0.0, 0.0]]), energy = 5.9, LY = 10000.0):
     # Rescale A such to properly take into account the difference in GEM_z
     GEM_z_LIME = 19.0
     GEM_z      = GetGEMsZ()
-    L_0    = A * 5.9 / GEM_z_LIME**4
-    L_1    = L_0 * GEM_z_LIME**2 / GEM_z**2
-    A_corr = L_1 * GEM_z**4 / 5.9
-    # Previous equations equivalent to A_corr = A / (GEM_Z_lime^2 * GEM_z^2) / (5.9/LY)
+    if rescale:
+        L_0    = A * 5.9 / GEM_z_LIME**4
+        L_1    = L_0 * GEM_z_LIME**2 / GEM_z**2
+        A_corr = L_1 * GEM_z**4 / 5.9
+        # Previous equations equivalent to A_corr = A / (GEM_Z_lime^2 * GEM_z^2) / (5.9/LY)
+    elif not rescale: A_corr = A*GEM_z**4/GEM_z_LIME**4
     
     if not isinstance(energy, np.ndarray):
         all_energies = np.repeat(energy, len(R_all.T[0]))
