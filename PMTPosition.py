@@ -140,6 +140,18 @@ def create_bat_input(fname = "./outputs/output_for_bat.txt", run=10000, n_evts=0
             
             outFile.write("\n")
 
+def create_mc_truth(fname = "./outputs/mc_truth.txt", positions=[]):
+    """
+    Creates a file with the X Y positions of the simulated points.
+    """
+
+    with open(fname, "w") as outFile:
+
+        for evt in range(len(positions)):
+            
+            outFile.write(f"{positions[evt, 0]}\t{positions[evt, 1]}")
+            outFile.write("\n")
+
 if __name__ == "__main__":
 
     print("\nPositions:")
