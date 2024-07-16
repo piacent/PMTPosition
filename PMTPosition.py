@@ -133,7 +133,9 @@ def create_bat_input(fname = "./outputs/output_for_bat.txt", run=10000, n_evts=0
         for evt in range(n_evts):
             outFile.write(f"{run}\t{evt}\t{trigger}\t{slice}")
             
-            for pmt_i in range(len(ints[0])):
+            # For now we read only 4 PMTs. Adjustments in the bat should be perform to make it flexible with the number of PMTs
+            # for pmt_i in range(len(ints[0])): 
+            for pmt_i in range(4):
                 outFile.write(f"\t{ints[evt][pmt_i] * vtg_to_nC}")
             
             outFile.write("\n")
