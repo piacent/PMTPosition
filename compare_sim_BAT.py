@@ -67,14 +67,14 @@ def compare_and_plot(df1, df2):
 
     # Histogram of X differences
     plt.subplot(1, 2, 1)
-    plt.hist(diff_x, bins=30, alpha=0.7, color='blue')
+    plt.hist(diff_x, bins=50, alpha=0.7, color='blue')
     plt.xlabel('Difference (x1 - x2)')
     plt.ylabel('Frequency')
     plt.title('Histogram of X Differences')
 
     # Histogram of Y differences
     plt.subplot(1, 2, 2)
-    plt.hist(diff_y, bins=30, alpha=0.7, color='green')
+    plt.hist(diff_y, bins=50, alpha=0.7, color='green')
     plt.xlabel('Difference (y1 - y2)')
     plt.ylabel('Frequency')
     plt.title('Histogram of Y Differences')
