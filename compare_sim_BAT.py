@@ -37,19 +37,19 @@ def compare_and_plot(df1, df2):
 
     # Plot X comparison
     plt.subplot(1, 2, 1)
-    plt.plot(x1, label='File 1 X')
-    plt.plot(x2, label='File 2 X')
-    plt.xlabel('Index')
-    plt.ylabel('X Values')
+    plt.plot(x1)
+    plt.plot(x2)
+    plt.xlabel('MC X')
+    plt.ylabel('Fitted X')
     plt.title('Comparison of X Values')
     plt.legend()
 
     # Plot Y comparison
     plt.subplot(1, 2, 2)
-    plt.plot(y1, label='File 1 Y')
-    plt.plot(y2, label='File 2 Y')
-    plt.xlabel('Index')
-    plt.ylabel('Y Values')
+    plt.plot(y1)
+    plt.plot(y2)
+    plt.xlabel('MC Y')
+    plt.ylabel('Fitted Y')
     plt.title('Comparison of Y Values')
     plt.legend()
 
@@ -68,14 +68,14 @@ def compare_and_plot(df1, df2):
     # Histogram of X differences
     plt.subplot(1, 2, 1)
     plt.hist(diff_x, bins=50, alpha=0.7, color='blue')
-    plt.xlabel('Difference (x1 - x2)')
+    plt.xlabel('(X) Fit - MC [cm]')
     plt.ylabel('Frequency')
     plt.title('Histogram of X Differences')
 
     # Histogram of Y differences
     plt.subplot(1, 2, 2)
     plt.hist(diff_y, bins=50, alpha=0.7, color='green')
-    plt.xlabel('Difference (y1 - y2)')
+    plt.xlabel('(Y) Fit - MC [cm]')
     plt.ylabel('Frequency')
     plt.title('Histogram of Y Differences')
 
