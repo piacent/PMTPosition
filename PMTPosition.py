@@ -20,7 +20,8 @@ def GetGEMsZ():
     GEM_z = 59.0 # Updated to the latest design of 17/06/2024
     return GEM_z
 
-def GenEventPosition(x_offset = 0.0, y_offset = 0.0, x_start = 0.0, x_end = 0.0, size = 10, distribution = 'uniform'):
+def GenEventPosition(size = 10, distribution = 'uniform', x_offset = 0.0, y_offset = 0.0, x_start = 0.0, x_end = 0.0, rows=1, y_start=0.0, y_end=0.0):
+
     """
     Returns N=size randomly generated spot positions with the specified spacial `distribution`, and
     assuming an offset = [x_offset, y_offset]
@@ -39,6 +40,23 @@ def GenEventPosition(x_offset = 0.0, y_offset = 0.0, x_start = 0.0, x_end = 0.0,
 
         x = np.linspace(x_start, x_end, size)
         y = np.full(size, y_offset)
+
+    elif distribution == 'grid':
+        if rows <= 0:
+            raise ValueError("Rows must be a positive integer.")
+        if y_start >= y_end:
+            raise ValueError("y_start must be less than y_end.")
+        
+        cols = size // rows
+        if cols * rows != size:
+            raise ValueError("Size must be a multiple of rows.")
+        
+        x = np.linspace(x_start, x_end, cols)
+        y = np.linspace(y_start, y_end, rows)
+        
+        xv, yv = np.meshgrid(x, y)
+        x = xv.ravel()
+        y = yv.ravel()
 
     else:
         raise Exception("PMTPosition.GenEventPosition: unknown '"+distribution+"' distribution.")
