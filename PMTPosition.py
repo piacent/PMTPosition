@@ -152,10 +152,16 @@ def create_bat_input(fname = "./outputs/output_for_bat.txt", run=10000, n_evts=0
             outFile.write(f"{run}\t{evt}\t{trigger}\t{slice}")
             
             # For now we read only 4 PMTs. Adjustments in the bat should be perform to make it flexible with the number of PMTs
-            # for pmt_i in range(len(ints[0])): 
-            for pmt_i in range(4):
-                outFile.write(f"\t{ints[evt][pmt_i] * vtg_to_nC}")
+            # for pmt_i in range(4):
+
+            #     outFile.write(f"\t{ints[evt][pmt_i] * vtg_to_nC}")
             
+            ## To look into different combinations of PMTs
+            for i in range(8):
+
+                if (i == 2 or i == 3 or i== 4 or i == 5):
+                    outFile.write(f"\t{ints[evt][i] * vtg_to_nC}")
+                
             outFile.write("\n")
 
 def create_mc_truth(fname = "./outputs/mc_truth.txt", positions=[]):
