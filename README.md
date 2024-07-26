@@ -1,18 +1,37 @@
-# PMTPosition
-Code for the "results" of PMT position on CYGNO04
+# PMT Position
+This repository constains a small Toy MC used by the [CYGNO collaboration](https://web.infn.it/cygnus/cygno/) to assess the best positions for the PMTs in the upcoming CYGNO-04.
 
-# To do list
+## Requirements
 
-* Get the actual z distance from GEM plane to PMTs [done]
-* Produce a uniform xy set of spotlike events [done]
-  * check the PMT intensity at 6 keV at LIME distance from the GEM and rescale [done]
-  * We probably just need the energy (aka PMT integral) and not the full waveform [done]
-* Compute the LY integral/amplitude for each PMT assuming R^-something [from 3.5 to 4.5]
-* Test different positions [check well geometry] as a fuction from the distance from camera. We can actually play only with the x position (assuming 3 cameras and 8 PMTs)
-* Test the different positions assuming the same "charge yield" of the PMTs (operated then at higher voltages wrt LIME)
-* Evaluate the "goodness" of a position by means of:
-  * Overall amplitude (for efficiency reasons)
-  * Ratios among amplitudes
-  * Apply Francesco's fit?
-* (Optional) Implement some sort of distortion to emulate cam-pmt coordinate transformation
-* (Optional) Exotic options? (Asymmetric, different number of PMTs)
+A running version of BAT, and the following repository: [BAT_PMTs](https://github.com/davidjgmarques/BAT_PMTs)
+
+A running version of Python with the following libraries installed:
+
+* numpy
+* pandas
+* scipy
+* matplotlib
+* argparse
+
+## Classes
+
+The `PMTPosition.py` class contains all the necessary functions for this simulation. 
+
+### Scripts for comparisons
+
+You can use ``sim_vs_MC.py`` to compare the simulated data with the fitted one.
+
+Usage: ``python sim_vs_MC.py ./outputs/fitted_data/fitted_dx_0.txt ./outputs/dx_0_mc_truth.txt``
+
+Similarly, you can use``compare_options`` to visually compare the different PMT options.
+
+Usage: ``python compare_options.py ./outputs/fitted_data/fitted_dx_0.txt ./outputs/dx_0_mc_truth.txt ./outputs/fitted_data/fitted_dx_1666.txt  ./outputs/dx_1666_mc_truth.txt``
+
+## Additional tests
+
+Exotic options:
+
+* Asymmetric distribution of PMTs
+* Different number of PMTs
+
+
